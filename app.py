@@ -44,20 +44,19 @@ import streamlit as st
 from PIL import Image
 
 # Function to Display and Save Response
+# Function to Display and Save Response
 def display_response(response):
     for part in response.candidates[0].content.parts:
-        # Display text content
         if part.text is not None:
             st.markdown(part.text)
-
-        # Display image content directly
         elif part.inline_data is not None:
             mime = part.inline_data.mime_type
-            st.write(f"Mime Type: {mime}")  # For debugging
-
-            # Directly handle the image data
-            image_data = part.inline_data.data  # Already in a compatible format
-            image = Image.open(image_data)      # Use directly
+            image_data = part.inline_data.data
+            
+            # Correctly handle the image data
+            image_stream = io.BytesIO(image_data)  # Wrap in BytesIO
+            image = Image.open(image_stream)       # Open image from stream
+            
             st.image(image, caption="Generated Image", use_container_width=True)
 
 
