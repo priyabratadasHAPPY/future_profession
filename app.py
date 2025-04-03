@@ -29,17 +29,32 @@ profession = st.selectbox("Select your future profession", ["Doctor", "Engineer"
 description = st.text_area("Describe your dream job in detail, including your role, responsibilities, and unique skills.")
 
 # Function to Display and Save Response
-def display_response(response):
-    for part in response.candidates[0].content.parts:
-        if part.text is not None:
-            st.markdown(part.text)
-        elif part.inline_data is not None:
-            mime = part.inline_data.mime_type
-            data = part.inline_data.data
-            # Decode base64 data and display image
-            decoded_data = base64.b64decode(data)
-            image = Image.open(io.BytesIO(decoded_data))
-            st.image(image, caption="Generated Image")
+# def display_response(response):
+#     for part in response.candidates[0].content.parts:
+#         if part.text is not None:
+#             st.markdown(part.text)
+#         elif part.inline_data is not None:
+#             mime = part.inline_data.mime_type
+#             data = part.inline_data.data
+#             # Decode base64 data and display image
+#             decoded_data = base64.b64decode(data)
+#             image = Image.open(io.BytesIO(decoded_data))
+#             st.image(image, caption="Generated Image")
+            
+import streamlit as st
+from PIL import Image
+
+# File uploader
+# uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    try:
+        # Open and display the image
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Uploaded Image", use_container_width=True)
+    except Exception as e:
+        st.error(f"Error loading image: {e}")
+
 
 # Generate Image
 if st.button("Generate Image"):
