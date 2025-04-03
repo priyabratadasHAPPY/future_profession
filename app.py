@@ -40,20 +40,26 @@ description = st.text_area("Describe your dream job in detail, including your ro
 #             decoded_data = base64.b64decode(data)
 #             image = Image.open(io.BytesIO(decoded_data))
 #             st.image(image, caption="Generated Image")
-            
 import streamlit as st
 from PIL import Image
 
-# File uploader
-# uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
+# Function to Display and Save Response
+def display_response(response):
+    for part in response.candidates[0].content.parts:
+        # Display text content
+        if part.text is not None:
+            st.markdown(part.text)
 
-if uploaded_file is not None:
-    try:
-        # Open and display the image
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_container_width=True)
-    except Exception as e:
-        st.error(f"Error loading image: {e}")
+        # Display image content directly
+        elif part.inline_data is not None:
+            mime = part.inline_data.mime_type
+            st.write(f"Mime Type: {mime}")  # For debugging
+
+            # Directly handle the image data
+            image_data = part.inline_data.data  # Already in a compatible format
+            image = Image.open(image_data)      # Use directly
+            st.image(image, caption="Generated Image", use_container_width=True)
+
 
 
 # Generate Image
