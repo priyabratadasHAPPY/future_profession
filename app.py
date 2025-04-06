@@ -71,7 +71,7 @@ if st.button("Generate Image"):
         response = client.models.generate_content(
             model=MODEL_ID,
             contents=[
-                 f"""Using the facial features from the uploaded image, create a realistic and highly similar image of a {profession}. Ensure the face closely matches the uploaded image, preserving unique facial characteristics.
+                 f"""Regenerate this image using the facial features from the uploaded image, create a realistic and highly similar image of a {profession}. Ensure the face closely matches the uploaded image, preserving unique facial characteristics.
                     This person is passionate about {description}. Depict them in a professional environment with appropriate attire, tools, and realistic surroundings
                     Additionally, provide a short, crisp educational roadmap for an Indian student to become a {profession} in both English and Odia:
                     Foundation Stage: Key subjects and skills to focus on in school.
