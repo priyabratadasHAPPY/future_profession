@@ -12,19 +12,26 @@ from PIL import Image
 import io
 import pathlib
 
-st.set_page_config(page_title="🌟 Quest Alliance: Envision Your Future Profession with AI! 🚀", page_icon="🟢")
+st.set_page_config(page_title="🌟Envision Your Future Profession with AI! 🚀", page_icon="🥳")
 
 # Google GenAI Client Setup
 api_key = "AIzaSyAHAcIkepcaNo9BGh1RMU7AohVkOsWgdHQ"
 client = genai.Client(api_key=api_key)
 MODEL_ID = "gemini-2.0-flash-exp"
 
-st.title("Quest Alliance Future Profession Visualization App")
+st.title("Future Profession Visualization App")
 st.subheader("Visualize your future career with AI-powered transformation!")
 
 # Input Section
 uploaded_file = st.file_uploader("Upload your photo", type=["jpg", "jpeg", "png"])
-profession = st.selectbox("Select your future profession", ["Doctor", "Engineer", "Teacher", "Pilot", "Scientist", "Lawyer", "Artist", "Athlete", "Chef", "Entrepreneur"])
+profession = st.selectbox("Select your future profession",[
+    "Doctor", "Engineer", "Teacher", "Pilot", "Scientist", 
+    "Lawyer", "Artist", "Athlete", "Chef", "Entrepreneur",
+    "IAS Officer", "IPS Officer", "Software Developer", "Banker",
+    "Farmer", "Ayurvedic Doctor", "Yoga Instructor", "Classical Dancer",
+    "Folk Musician", "Handloom Weaver", "Social Worker", "Army Officer",
+    "Cricketer", "Actor", "Politician", "Journalist", "Chartered Accountant"
+])
 # age = st.slider("Select your age", min_value=10, max_value=60, value=25)
 description = st.text_area("Describe your dream job in detail, including your role, responsibilities, and unique skills.")
 
