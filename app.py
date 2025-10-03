@@ -17,7 +17,7 @@ st.set_page_config(page_title="🌟Envision Your Future Profession with AI! 🚀
 # Google GenAI Client Setup
 api_key = "AIzaSyAHAcIkepcaNo9BGh1RMU7AohVkOsWgdHQ"
 client = genai.Client(api_key=api_key)
-MODEL_ID = "gemini-2.5-flash-image"
+MODEL_ID = "gemini-2.5-flash-exp"
 
 st.title("Future Profession Visualization App")
 st.subheader("Visualize your future career with AI-powered transformation!")
@@ -233,6 +233,7 @@ if st.button("Generate Image"):
 #         save_image(response, f"{profession.lower()}.png")
 #     else:
 #         st.warning("Please upload a photo before generating.")
+
 
 
 
