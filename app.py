@@ -66,6 +66,11 @@ def display_response(response):
 
 
 # --- Main Application Logic ---
+# ... (rest of the imports and setup)
+
+# ... (rest of the app up to the button click)
+
+# Generate Image
 if st.button("Generate Image"):
     if uploaded_file is None:
         st.warning("Please upload a photo before generating.")
@@ -73,19 +78,15 @@ if st.button("Generate Image"):
         # Load the uploaded image
         image = Image.open(uploaded_file)
         
-        # FIX Streamlit deprecation: use_container_width=True
         st.image(image, caption="Uploaded Photo", use_container_width=True)
 
         with st.spinner("Generating your future profession visualization and roadmap..."):
             try:
                 # AI Image Generation with Roadmap
-                # The prompt is complex and should ideally use a multi-modal model like gemini-2.5-flash
-                # Note: The success of face preservation depends heavily on the model's current capability 
-                # and adherence to safety guidelines.
                 response = client.models.generate_content(
                     model=MODEL_ID,
                     contents=[
-                        image, # Place the image first for best interpretation
+                        image, # Image part
                         f"""Regenerate this image using the **face from the uploaded image**, create a realistic and highly similar image of a **{profession}**. Ensure the face closely and accurately matches the uploaded image, preserving unique facial characteristics.
                         This person is passionate about {description}. Depict them in a professional environment with appropriate attire, tools, and realistic surroundings.
                         Additionally, provide a short, crisp educational **roadmap for an Indian student** to become a {profession} in both **English and Odia**:
@@ -101,19 +102,22 @@ if st.button("Generate Image"):
                         Ensure the roadmap is formatted with bullet points, concise, and easy to understand."""
                     ],
                     config=types.GenerateContentConfig(
-                        # This config tells the model we expect both Text and Image back
-                        response_mime_types=["text/markdown", "image/png"]
+                        # 🛑 FIX 1: Use 'response_modalities' instead of 'response_mime_types'
+                        response_modalities=['Text', 'Image']
                     )
                 )
 
                 display_response(response)
 
-            except genai.errors.ResourceExhaustedError:
-                st.error("Quota Exceeded (Error 429): You've run out of requests or tokens for your current quota. Please try again in a few minutes or check your usage dashboard.")
-            except genai.errors.NotFoundError:
-                 st.error(f"Model Not Found (Error 404): The model ID '{MODEL_ID}' is incorrect or deprecated. Please verify the model name.")
+            # 🛑 FIX 2: Catch the correct general exception class for API errors
             except genai.errors.APIError as e:
-                # Catch other API errors
-                st.error(f"An API Error occurred: {e}. Check your API key and network connection.")
+                # The e.message will often contain the 429/404 details
+                if "RESOURCE_EXHAUSTED" in str(e):
+                    st.error("Quota Exceeded (Error 429): Please try again in a few minutes or check your usage dashboard.")
+                elif "NOT_FOUND" in str(e):
+                    st.error(f"Model Not Found (Error 404): The model ID '{MODEL_ID}' is incorrect or deprecated.")
+                else:
+                    st.error(f"An API Error occurred: {e}. Please check your API key.")
             except Exception as e:
                 st.exception(f"An unexpected error occurred: {e}")
+
