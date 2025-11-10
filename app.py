@@ -15,7 +15,7 @@ import pathlib
 st.set_page_config(page_title="🌟Envision Your Future Profession with AI! 🚀", page_icon="🥳")
 
 # Google GenAI Client Setup
-api_key = "AIzaSyAHAcIkepcaNo9BGh1RMU7AohVkOsWgdHQ"
+api_key = "AIzaSyDKGLtJAJOZuKeKsRBolaB2Sv3tY_iYBbk"
 client = genai.Client(api_key=api_key)
 MODEL_ID = "gemini-2.0-flash-exp"
 
@@ -233,6 +233,7 @@ if st.button("Generate Image"):
 #         save_image(response, f"{profession.lower()}.png")
 #     else:
 #         st.warning("Please upload a photo before generating.")
+
 
 
 
